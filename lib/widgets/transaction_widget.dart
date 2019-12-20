@@ -19,11 +19,11 @@ class TransactionItem extends StatelessWidget {
                 '\$ ${transaction.amount.toStringAsFixed(2)}',
                 style: TextStyle(
                     fontSize: 20,
-                    color: Colors.blueAccent,
+                    color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold),
               ),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blueAccent, width: 5)),
+                  border: Border.all(color: Theme.of(context).primaryColor, width: 5)),
             ),
             Container(
               padding: EdgeInsets.all(30),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'transaction_list.dart';
 
 class UserTransactions extends StatefulWidget {
   _UserTransactionsState createState() => _UserTransactionsState();

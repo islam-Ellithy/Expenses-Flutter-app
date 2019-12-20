@@ -1,8 +1,8 @@
 import 'package:expenses_planner/widgets/new_transaction.dart';
-import 'package:expenses_planner/widgets/user_transactions.dart';
 import 'package:flutter/material.dart';
 
 import 'models/transaction.dart';
+import 'widgets/chart.dart';
 import 'widgets/transaction_list.dart';
 
 void main() => runApp(App());
@@ -10,7 +10,10 @@ void main() => runApp(App());
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
+    return MaterialApp(
+      home: HomePage(),
+      theme: ThemeData(primarySwatch: Colors.purple),
+    );
   }
 }
 
@@ -22,12 +25,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Transaction> _userTransactions = [
     Transaction(
-        id: 'T1', title: 'New shoes', amount: 99.00, date: DateTime.now()),
+        id: 'T1', title: 'New shoes', amount: 99.00, date: DateTime.now().subtract(Duration(days: 2))),
     Transaction(
-        id: 'T2', title: 'Checken', amount: 110.00, date: DateTime.now()),
+        id: 'T2', title: 'Checken', amount: 110.00, date: DateTime.now().subtract(Duration(days: 4))),
     Transaction(id: 'T3', title: 'Juice', amount: 20.00, date: DateTime.now()),
     Transaction(id: 'T4', title: 'Fish', amount: 45.00, date: DateTime.now()),
   ];
+
+  List<Transaction> get _getUserTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
 
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
@@ -38,7 +47,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _addNewTransaction(String txTitle, double txAmount) {
-    
     final Transaction tx = Transaction(
         title: txTitle,
         amount: txAmount,
@@ -53,7 +61,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Expense planner"),
+        title: Text("Expense Planner"),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.add),
@@ -68,12 +76,7 @@ class _HomePageState extends State<HomePage> {
             Container(
                 width: double.infinity,
                 child: Card(
-                  color: Colors.blue,
-                  child: Text(
-                    'Charts',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 30, color: Colors.white),
-                  ),
+                  child: Chart(_getUserTransactions),
                 )),
             TransactionList(_userTransactions),
           ],
