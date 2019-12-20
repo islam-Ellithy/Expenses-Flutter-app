@@ -10,27 +10,26 @@ class ChartBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      Text(amount.toString()),
+      FittedBox(child: Text('\$${amount.toStringAsFixed(0)}')),
       SizedBox(
         height: 10,
       ),
       Container(
         width: 10,
         height: 100,
-        color: Colors.blue,
+        color: Color.fromRGBO(220, 220, 220, 1),
         child: Stack(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(220, 220, 220, 1),
-                border: Border.all(color: Colors.grey, width: 1.0),
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20),
               ),
               child: FractionallySizedBox(
                 heightFactor: percentage,
                 child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 ),
               ),
             ),

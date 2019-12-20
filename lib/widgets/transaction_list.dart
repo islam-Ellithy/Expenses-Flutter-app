@@ -1,11 +1,11 @@
-import 'package:expenses_planner/widgets/transaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:expenses_planner/models/transaction.dart';
+import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-
-  TransactionList(this.transactions);
+  final Function deleteTx;
+  TransactionList(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,10 @@ class TransactionList extends StatelessWidget {
       child: transactions.isEmpty
           ? Column(
               children: <Widget>[
-                Text('No Transactions Added Yet',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                Text(
+                  'No Transactions Added Yet',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -26,8 +29,31 @@ class TransactionList extends StatelessWidget {
             )
           : ListView.builder(
               itemBuilder: (context, index) {
-                return TransactionItem(
-                  transaction: transactions[index],
+                return Card(
+                  margin: EdgeInsets.all(10),
+                  elevation: 5,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                        radius: 30,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: FittedBox(
+                            child: Text('\$${transactions[index].amount}'),
+                          ),
+                        )),
+                    title: Text(
+                      transactions[index].title,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      DateFormat.yMMMd().format(transactions[index].date),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Colors.red,
+                      onPressed: () => deleteTx(transactions[index].id),
+                    ),
+                  ),
                 );
               },
               itemCount: transactions.length,

@@ -1,7 +1,7 @@
 # expenses_planner
 
-A new Flutter application.
+App for personal expenses
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+
+![App](https://github.com/islam-Ellithy/Expenses-Flutter-app/blob/master/app.png)

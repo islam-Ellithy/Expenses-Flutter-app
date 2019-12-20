@@ -12,7 +12,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: HomePage(),
-      theme: ThemeData(primarySwatch: Colors.purple),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -24,12 +27,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-        id: 'T1', title: 'New shoes', amount: 99.00, date: DateTime.now().subtract(Duration(days: 2))),
-    Transaction(
-        id: 'T2', title: 'Checken', amount: 110.00, date: DateTime.now().subtract(Duration(days: 4))),
-    Transaction(id: 'T3', title: 'Juice', amount: 20.00, date: DateTime.now()),
-    Transaction(id: 'T4', title: 'Fish', amount: 45.00, date: DateTime.now()),
+    // Transaction(
+    //     id: 'T1',
+    //     title: 'New shoes',
+    //     amount: 99.00,
+    //     date: DateTime.now().subtract(Duration(days: 2))),
+    // Transaction(
+    //     id: 'T2',
+    //     title: 'Checken',
+    //     amount: 110.00,
+    //     date: DateTime.now().subtract(Duration(days: 4))),
+    // Transaction(id: 'T3', title: 'Juice', amount: 20.00, date: DateTime.now()),
+    // Transaction(id: 'T4', title: 'Fish', amount: 45.00, date: DateTime.now()),
   ];
 
   List<Transaction> get _getUserTransactions {
@@ -46,11 +55,20 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) {
+        return tx.id == id;
+      });
+    });
+  }
+
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final Transaction tx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: chosenDate,
         id: _userTransactions.length.toString());
     setState(() {
       _userTransactions.add(tx);
@@ -61,7 +79,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Expense Planner"),
+        title: Text(
+          "Personal Expenses",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.add),
@@ -78,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                 child: Card(
                   child: Chart(_getUserTransactions),
                 )),
-            TransactionList(_userTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
